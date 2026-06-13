@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق اختبار الستيب التفاعلي (STEP) - التطبيق 1</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 15px;
+        }
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .question-card {
+            margin-bottom: 25px;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: left;
+            direction: ltr;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+        .option-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            text-align: left;
+            direction: ltr;
+        }
+        .option-item:hover {
+            background: #e8f4fd;
+            border-color: #3498db;
+        }
+        .option-item.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            pointer-events: none;
+        }
+        .option-item.wrong {
+            display: none;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .feedback.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .score-board {
+            text-align: center;
+            display: none;
+        }
+        .score-num {
+            font-size: 48px;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>تطبيق تفاعلي لاختبار الستيب (STEP) - التطبيق الأول</h1>
+    
+    <div id="quiz-section">
+        <div class="progress-bar">
+            <div id="progress" class="progress-fill"></div>
+        </div>
+        
+        <div class="question-card">
+            <div id="question-title" style="font-size: 14px; color: #7f8c8d; margin-bottom: 5px; font-weight: bold;">السؤال <span id="current-q-num">1</span> من 20</div>
+            <div id="question-body" class="question-text"></div>
+            <ul id="options-body" class="options-list"></ul>
+        </div>
+        
+        <div id="feedback-box" class="feedback"></div>
+        <button id="next-btn" class="btn" style="display: none;" onclick="nextQuestion()">السؤال التالي</button>
+    </div>
+
+    <div id="result-section" class="score-board">
+        <h2>تهانينا! لقد أتممت التطبيق التفاعلي الأول بنجاح.</h2>
+        <div class="score-num">20 / 20</div>
+        <p style="font-size: 18px; color: #7f8c8d;">أنت الآن جاهز للانتقال إلى التطبيق التالي!</p>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {"id": 1, "question": "Which sentence has completely CORRECT capitalization and punctuation?", "options": ["Every Friday, Khalid visits the King Khalid Mosque in Riyadh.", "Every friday, Khalid visits the King Khalid Mosque in Riyadh.", "Every Friday, khalid visits the King Khalid mosque in Riyadh.", "Every Friday, Khalid visits the King Khalid Mosque in riyadh.", "Every Friday Khalid visits the King Khalid Mosque in Riyadh?"], "correct": 0, "rationale": "Days (Friday), names (Khalid), specific places (King Khalid Mosque), and cities (Riyadh) must be capitalized."},
+        {"id": 2, "question": "While the professor ......... the grammar rules, the alarm went off.", "options": ["was explaining", "explains", "is explaining", "has explained", "will explain"], "correct": 0, "rationale": "'While' is followed by past continuous for a continuous past activity."},
+        {"id": 3, "question": "One of my oldest friends ......... coming to visit me next Monday.", "options": ["is", "are", "were", "been", "am"], "correct": 0, "rationale": "The actual grammatical subject is the singular pronoun 'One'."},
+        {"id": 4, "question": "The security team cannot find ......... evidence to solve the system issue.", "options": ["any", "many", "few", "a few", "an"], "correct": 0, "rationale": "'Evidence' is uncountable and the clause is negative, so 'any' is correct."},
+        {"id": 5, "question": "This newly developed language test is much ......... than the previous version.", "options": ["more difficult", "difficult", "difficulter", "the most difficult", "most difficult"], "correct": 0, "rationale": "Comparative form with 'than' for long adjectives requires 'more'."},
+        {"id": 6, "question": "The ......... office is located on the third floor of the ministry building.", "options": ["teachers'", "teacher's'", "teacherses", "teacher", "teachers"], "correct": 0, "rationale": "Plural regular nouns ending in 's' take an apostrophe at the very end."},
+        {"id": 7, "question": "Ahmed studied day and night; ........., he managed to pass the STEP exam easily.", "options": ["consequently", "although", "but", "whereas", "unless"], "correct": 0, "rationale": "'Consequently' shows a logical cause/effect result following a semicolon."},
+        {"id": 8, "question": "Choose the correctly capitalized geopolitical location below:", "options": ["They relocated to North Korea last winter.", "They relocated to north korea last winter.", "They relocated to North korea last winter.", "They relocated to north Korea last winter.", "They relocated to North Korea last Winter."], "correct": 0, "rationale": "Geopolitical proper names require full capitalization; seasons like winter do not."},
+        {"id": 9, "question": "As soon as the principal ......... into the hall, all the guests stood up.", "options": ["walked", "walks", "was walking", "has walked", "will walk"], "correct": 0, "rationale": "'As soon as' links successive completed actions in the past simple tense."},
+        {"id": 10, "question": "Physics ......... considered one of the most vital scientific subjects.", "options": ["is", "are", "were", "been", "am"], "correct": 0, "rationale": "Academic subjects ending in '-ics' represent singular fields of study."},
+        {"id": 11, "question": "There is very ......... water left in the container; we need to buy more.", "options": ["little", "few", "many", "a few", "too many"], "correct": 0, "rationale": "'Water' is uncountable and the small, insufficient amount requires 'little'."},
+        {"id": 12, "question": "Russia is officially recognized as ......... country in the world.", "options": ["the coldest", "colder", "more cold", "most cold", "the colder"], "correct": 0, "rationale": "Superlative comparison among all global entities requires 'the' + '-est'."},
+        {"id": 13, "question": "Which option displays the correct possessive form for an irregular plural?", "options": ["The children's toys were scattered across the living room floor.", "The childrens' toys were scattered across the living room floor.", "The childrens toys' were scattered across the living room floor.", "The children toys were scattered across the living room floor.", "The children's' toys were scattered across the living room floor."], "correct": 0, "rationale": "Irregular plurals not ending in 's' form possessives by adding an apostrophe then 's'."},
+        {"id": 14, "question": "The match was canceled ......... it was raining heavily with strong winds.", "options": ["because", "but", "although", "so", "unless"], "correct": 0, "rationale": "'Because' introduces the direct clause of reason or cause."},
+        {"id": 15, "question": "Select the option that requires mandatory punctuation capitalization:", "options": ["I speak English fluently.", "I speak english fluently.", "i speak English fluently.", "I speak English Fluently.", "I Speak English fluently."], "correct": 0, "rationale": "The pronoun 'I' and official languages (English) must always be capitalized."},
+        {"id": 16, "question": "When the supervisor arrived at the department, the staff ......... hard.", "options": ["were working", "are working", "works", "have worked", "will work"], "correct": 0, "rationale": "A past continuous background action ('were working') was active when a past simple action hit."},
+        {"id": 17, "question": "One of the modern cars in the showroom ......... powered completely by hydrogen.", "options": ["is", "are", "were", "been", "am"], "correct": 0, "rationale": "Subject-verb agreement centers on the singular head noun 'One'."},
+        {"id": 18, "question": "How ......... money do you need to complete the course registration?", "options": ["much", "many", "few", "a few", "any"], "correct": 0, "rationale": "'Money' is an uncountable noun, so questions of amount use 'much'."},
+        {"id": 19, "question": "This specific grammatical rule is ......... than the one we took last week.", "options": ["easier", "more easy", "easiest", "the easiest", "the easier"], "correct": 0, "rationale": "Short adjectives form comparative with the '-er' suffix instead of 'more'."},
+        {"id": 20, "question": "The company faced severe losses; ........., they laid off some staff.", "options": ["consequently", "although", "but", "whereas", "unless"], "correct": 0, "rationale": "A adverbial transition showing result after a semicolon is 'consequently'."}
+    ];
+
+    let currentIdx = 0;
+
+    function loadQuestion() {
+        if (currentIdx >= questions.length) {
+            showResults();
+            return;
+        }
+        
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("feedback-box").style.display = "none";
+        document.getElementById("feedback-box").className = "feedback";
+        
+        let q = questions[currentIdx];
+        document.getElementById("current-q-num").innerText = currentIdx + 1;
+        document.getElementById("question-body").innerText = q.question;
+        
+        let optionsHtml = "";
+        q.options.forEach((opt, index) => {
+            optionsHtml += `<li class="option-item" onclick="checkAnswer(this, ${index})">${opt}</li>`;
+        });
+        document.getElementById("options-body").innerHTML = optionsHtml;
+        
+        let progressPercent = (currentIdx / questions.length) * 100;
+        document.getElementById("progress").style.width = progressPercent + "%";
+    }
+
+    function checkAnswer(element, selectedIdx) {
+        let q = questions[currentIdx];
+        if (selectedIdx === q.correct) {
+            element.classList.add("correct");
+            let items = document.querySelectorAll(".option-item");
+            items.forEach(item => item.style.pointerEvents = "none");
+            
+            let feedbackBox = document.getElementById("feedback-box");
+            feedbackBox.innerHTML = `<strong>إجابة صحيحة!</strong><br><span style="direction: ltr; text-align: left; display: block; margin-top: 5px;">${q.rationale}</span>`;
+            feedbackBox.className = "feedback success";
+            
+            document.getElementById("next-btn").style.display = "block";
+        } else {
+            element.classList.add("wrong");
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById("quiz-section").style.display = "none";
+        document.getElementById("result-section").style.display = "block";
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
